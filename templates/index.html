@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body {
+                background-image: url('/static/logo.png');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-color: #0777d9;
+                font-family: Arial, sans-serif;
+                text-align: center;
+            }
+            .button1, .button2, .button3, .button4, .button5 {
+                background-color: #4CAF50;
+                border: 2px solid #3e9241;
+                color: white;
+                padding: 10px;
+                border-radius: 15px;
+                width: 200px;
+                margin: 10px auto;
+                transition: all 0.3s ease;
+            }   
+            .button1:hover, .button2:hover, .button3:hover, .button4:hover, .button5:hover {
+                background-color: #4CAF50;
+                border: 2px solid #5fbc62;
+                color: white;
+                padding: 10px;
+                border-radius: 15px;
+                width: 200px;
+                margin: 10px auto;
+                transform: translateY(-5px);
+                box-shadow: 0 5px 10px rgba(63, 236, 163, 0.5);
+            }   
+            .logo {
+                opacity: 0;
+                width: 1000px;
+                height: 1000px;
+                border-radius: 10px;
+                transition: all 1s ease-in;
+            }
+            h1 {
+                color: #0fd6a1;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+                margin-top: 20px;
+            }
+            .sair {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background-color: #bb5757;
+                border: 2px solid #de7676;
+                color: white;
+                padding: 10px;
+                border-radius: 5px;
+                transition: all 0.3s ease;
+            }
+            .sair:hover {
+                border: 2px solid #ee2e2e;
+                background-color: #ff0000;
+            }
+            
+            #mouseAnimado {
+                position: fixed;
+                width: 55px;
+                height: 55px;
+                object-fit: contain;
+                pointer-events: none;
+                z-index: 10001;
+                opacity: 1;
+                transition: none;
+            }
+                        
+            .controle-musica {
+                position: fixed;
+                bottom: 20px;
+                left: 20px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 12px;
+                background: rgba(0, 0, 0, 0.85);
+                border: 2px solid #0fd6a1;
+                border-radius: 12px;
+                color: #0fd6a1;
+                z-index: 1000;
+            }
+
+            #botaoMusica {
+                background: #0fd6a1;
+                color: black;
+                border: none;
+                padding: 10px 14px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: bold;
+            }
+
+            #botaoMusica:hover {
+                background: #4cffcf;
+                transform: scale(1.05);
+            }
+
+            #playerMusica {
+                position: fixed;
+                width: 1px;
+                height: 1px;
+                left: -100px;
+                bottom: 0;
+                overflow: hidden;
+            }
+
+            
+            #transicao {
+                position: fixed;
+                inset: 0;
+                background: black;
+                opacity: 0;
+                pointer-events: none;
+                z-index: 10000;
+                transition: opacity 0.4s ease;
+            }
+
+            #transicao.ativo {
+                opacity: 1;
+            }
+            p {
+                scale: 0.7;
+                opacity: 0.5;
+            }
+        </style>
+        <title>menu</title>
+    </head>
+    <body>
+        <h1>Escravidao no Brasil</h1>
+        <div class="button1">
+            <a href="/chegada-africanos">Chegada dos Africanos</a>
+        </div>
+        <div class="button2">
+            <a href="/trabalho-vida">Trabalho e Vida dos Escravizados</a>
+        </div>
+        <div class="button3">
+            <a href="/resistencia-quilombos">Resistência dos Quilombos</a>
+        </div>
+        <div class="button4">
+            <a href="/abolicao-escravidao">Abolição da Escravidão</a>
+        </div>
+        <div class="button5">
+            <a href="/legado-africano">Legado Africano</a>
+        </div>
+        <img class="logo" src="/static/images (8).jpg" alt="Logo" style="margin-top: 20px;">
+        <p>se for dificil, o resultado vai ser maravilhoso!</p>
+        <img id="mouseAnimado" src="/static/mouse.png" alt=""
+            style="display: none;">
+        <img src="/static/tenor.gif" alt="Gif">
+        <div class="musica">
+            <iframe
+                width="250"
+                height="100"
+                src="https://www.youtube.com/embed/1U_2WqZ3pzI?autoplay=1&start=46"
+                title="Música do menu"
+                allow="autoplay; encrypted-media"
+                allowfullscreen>
+            </iframe>
+        </div>
+        <div class="controle-musica">
+            <span>🎵 Música do menu</span>
+            <button id="botaoMusica">▶ PLAY</button>
+
+            <div id="playerMusica"></div>
+        </div>
+        <div id="transicao"></div>
+        <div class="alinhamentodebaixo">
+            <div class="sair">
+                <a href="https://google.com">Sair</a>
+                <img src="/static/exit.png" alt="Sair" style="width: 15px; height: 15px; margin-left: 5px;">
+            </div>
+        </div>
+        <script>
+            window.addEventListener('load', function() {
+                const img = document.querySelector('.logo');
+                img.style.opacity = 1;
+                img.style.width = '300px';
+                img.style.height = 'auto';
+                img.style.boxShadow = '0 5px 15px 10px rgba(35, 222, 150, 0.7)';
+            });
+            
+            
+            const mouseAnimado = document.getElementById('mouseAnimado');
+            const transicao = document.getElementById('transicao');
+
+            document.querySelectorAll(
+                '.button1 a, .button2 a, .button3 a, .button4 a, .button5 a'
+            ).forEach(function(botao) {
+
+                botao.addEventListener('click', function(event) {
+                    // Mantém a página atual aberta durante a animação
+                    event.preventDefault();
+
+                    const destino = botao.href;
+                    const rect = botao.getBoundingClientRect();
+
+                    // Posição inicial: centro da tela
+                    mouseAnimado.style.display = 'block';
+                    mouseAnimado.style.transition = 'none';
+                    mouseAnimado.style.left = (window.innerWidth / 2) + 'px';
+                    mouseAnimado.style.top = (window.innerHeight / 2) + 'px';
+
+                    // Força o navegador a registrar a posição inicial
+                    mouseAnimado.offsetHeight;
+
+                    // Posição final: botão clicado
+                    mouseAnimado.style.transition =
+                        'left 0.7s ease, top 0.7s ease';
+
+                    mouseAnimado.style.left =
+                        (rect.left + rect.width / 2) + 'px';
+
+                    mouseAnimado.style.top =
+                        (rect.top + rect.height / 2) + 'px';
+
+                    // Depois do movimento, escurece e abre a página
+                    setTimeout(function() {
+                        transicao.classList.add('ativo');
+
+                        setTimeout(function() {
+                            window.location.href = destino;
+                        }, 450);
+
+                    }, 750);
+                });
+            });
+
+
+        </script>
+        
+        <script>
+        let playerMusica;
+        let tocando = false;
+
+        const botaoMusica = document.getElementById("botaoMusica");
+
+        botaoMusica.addEventListener("click", function () {
+            if (!playerMusica) {
+                botaoMusica.textContent = "CARREGANDO...";
+
+                window.onYouTubeIframeAPIReady = function () {
+                    playerMusica = new YT.Player("playerMusica", {
+                        width: "200",
+                        height: "100",
+                        videoId: "1U_2WqZ3pzI",
+                        playerVars: {
+                            start: 46
+                        },
+                        events: {
+                            onReady: function (evento) {
+                                evento.target.playVideo();
+                            },
+                            onStateChange: function (evento) {
+                                if (evento.data === YT.PlayerState.PLAYING) {
+                                    tocando = true;
+                                    botaoMusica.textContent = "⏸ PAUSAR";
+                                } else {
+                                    tocando = false;
+                                    botaoMusica.textContent = "▶ PLAY";
+                                }
+                            }
+                        }
+                    });
+                };
+
+                const script = document.createElement("script");
+                script.src = "https://www.youtube.com/iframe_api";
+                document.head.appendChild(script);
+            } else if (tocando) {
+                playerMusica.pauseVideo();
+            } else {
+                playerMusica.playVideo();
+            }
+        });
+        </script>
+
+    </body>
+</html>
